@@ -35,8 +35,10 @@ class AdaptivePrototypicalFeedback(nn.Module):
             nonZeroRows = torch.abs(classes_mean).sum(dim=1) > 0
             ZeroRows = torch.abs(classes_mean).sum(dim=1) == 0
             class_num = classes_mean.shape[0]
-            nonZero_class = torch.arange(class_num)[nonZeroRows]
-            Zero_class = torch.arange(class_num)[ZeroRows]
+
+            device = nonZeroRows.device  # Fix: get correct device
+            nonZero_class = torch.arange(class_num, device=device)[nonZeroRows]
+            Zero_class = torch.arange(class_num, device=device)[ZeroRows]
 
             classes_mean = classes_mean[nonZeroRows]
 
